@@ -5,9 +5,12 @@ const HttpError = require('./models/http-error');
 const placesRoutes = require('./routes/palces-routes');
 const usersRoutes = require('./routes/users-routes');
 const productsRoutes = require('./routes/products-routes');
-
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
 
 const app = express();
+const url = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}/${process.env.MONGO_DB}?retryWrites=true&w=majority`;   
 
 app.use(bodyParser.json());
 
@@ -30,9 +33,15 @@ app.use((error, req, res, next) => {
 
 });
 
+mongoose.connect(url)
+    .then(() => {
+        app.listen(5000);
+        //console.log('Connected to MongoDB');            
+    })
+    .catch(err => {
+        console.log('Failed to connect to MongoDB', err);
+    });
 
-app.use(bodyParser.json());
-
-app.listen(5000, () => {
-    console.log('Server is running on port 5000');
-});
+// app.listen(5000, () => {
+//     console.log('Server is running on port 5000');
+// });
