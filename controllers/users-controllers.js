@@ -29,7 +29,7 @@ const signup = async (req, res, next) => {
         );
     }
 
-    const { name, email, password, places } = req.body;
+    const { name, email, password } = req.body;
     let existingUser;
     try {
         existingUser = await User.findOne({ email: email });
@@ -55,7 +55,7 @@ const signup = async (req, res, next) => {
         email,
         password,
         image: 'https://pbs.twimg.com/profile_images/1485507419834501121/3N7g0k1o_400x400.jpg',
-        places
+        places: []
     });
 
     try {
